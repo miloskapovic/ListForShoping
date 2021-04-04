@@ -11,6 +11,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 FROM base as dev
 ENV NODE_ENV=development
+ENV JWT_SECRET=asdfwefwefwef
+ENV mongoDB=mongodb://mongo:27017/shoping-list
 RUN npm install --only=development
 CMD ["/app/node_modules/.bin/nodemon"]
 

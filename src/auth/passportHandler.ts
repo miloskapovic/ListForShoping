@@ -5,7 +5,6 @@ import passportJwt from "passport-jwt";
 import { User } from "../models/user";
 import { JWT_SECRET } from "../util/secrets";
 
-
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
