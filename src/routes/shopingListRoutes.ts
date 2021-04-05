@@ -16,9 +16,11 @@ export class ProductRoutes {
 
     routes() {
         this.router.get("/", this.shopingListController.getShopingLists);
+        this.router.get("/sum", this.authController.authenticateJWT, this.shopingListController.getShopingListsProductsQuantities);
         this.router.get("/:id", this.shopingListController.getShopingList);
         this.router.post("/", this.authController.authenticateJWT, this.shopingListController.createShopingList);
         this.router.put("/:id", this.authController.authenticateJWT, this.shopingListController.updateShopingList);
         this.router.delete("/:id", this.authController.authenticateJWT, this.shopingListController.deleteShopingList);
+        this.router.get("/sum", this.authController.authenticateJWT, this.shopingListController.getShopingListsProductsQuantities);
     }
 }

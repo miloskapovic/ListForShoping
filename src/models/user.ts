@@ -1,5 +1,5 @@
 import { Document, Schema, Model, model, Error } from "mongoose";
-import bcrypt from "bcrypt-nodejs";
+import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
   username: string;
@@ -8,25 +8,25 @@ export interface IUser extends Document {
 
 export const userSchema: Schema = new Schema({
   username: String,
-  password: String,
+  password: {
+    type: String,
+    maxlength: 1000
+  },
 });
 
 
 userSchema.pre<IUser>("save", function save(next) {
   const user = this;
 
-  bcrypt.genSalt(10, (err, salt) => {
+  bcrypt.hash(this.password, 10, function(err: Error, hash) {
     if (err) { return next(err); }
-    bcrypt.hash(this.password, salt, null, (err: Error, hash) => {
-      if (err) { return next(err); }
-      user.password = hash;
-      next();
-    });
+    user.password = hash;
+    next();
   });
 });
 
 userSchema.methods.comparePassword = function (candidatePassword: string, callback: any) {
-  bcrypt.compare(candidatePassword, this.password, (err: Error, isMatch: boolean) => {
+  bcrypt.compare(candidatePassword, this.password, function(err: Error, isMatch: boolean) {
     callback(err, isMatch);
   });
 };

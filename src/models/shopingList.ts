@@ -1,9 +1,9 @@
 import mongoose, { Document, Schema, Model, model, Error } from "mongoose";
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-interface Product {
+export interface Product {
   name: String;
-  quantity: Number;
+  quantity: number;
 }
 
 export interface IShopingList extends Document {

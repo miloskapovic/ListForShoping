@@ -2,7 +2,6 @@ import { Request, Response, ErrorRequestHandler } from "express";
 const mongoose = require("mongoose");
 
 const connect = async () => {
-  console.log("JADIIIIII", process.env.mongoDB)
   return new Promise((resolve, reject) => {
     mongoose
       .connect(process.env.mongoDB, {

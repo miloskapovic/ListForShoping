@@ -1,6 +1,5 @@
 import passport from "passport";
 import passportLocal from "passport-local";
-// import passportApiKey from "passport-headerapikey";
 import passportJwt from "passport-jwt";
 import { User } from "../models/user";
 import { JWT_SECRET } from "../util/secrets";
@@ -10,6 +9,7 @@ const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
 
 passport.use(new LocalStrategy({ usernameField: "username" }, (username, password, done) => {
+
   User.findOne({ username: username.toLowerCase() }, (err, user: any) => {
     if (err) { return done(err); }
     if (!user) {
@@ -17,6 +17,7 @@ passport.use(new LocalStrategy({ usernameField: "username" }, (username, passwor
     }
     user.comparePassword(password, (err: Error, isMatch: boolean) => {
       if (err) { return done(err); }
+
       if (isMatch) {
         return done(undefined, user);
       }

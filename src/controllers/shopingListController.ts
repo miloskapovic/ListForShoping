@@ -1,8 +1,24 @@
 
 import { Request, Response } from "express";
-import { IShopingList, ShopingList } from "../models/shopingList";
+import { IShopingList, ShopingList, Product } from "../models/shopingList";
 
 export class ShopingListController {
+    public async getShopingListsProductsQuantities(req: Request, res: Response): Promise<void> {
+        if (req.body.startDate && req.body.endDate) {
+            let shopingLists = await ShopingList.find({"creationDate": {"$gte": req.body.startDate, "$lt": req.body.endDate}})
+            let productsList: Array<Product> = [];
+            for(var i=0; i<shopingLists.length; i++){
+                productsList = productsList.concat(shopingLists[i].products);
+             }
+            const summedProductsList = Array.from(
+                productsList.reduce((m, { name, quantity }) => m.set(name, (m.get(name) || 0) + quantity), new Map),
+                ([name, quantity]) => ({ name, quantity })
+            );
+            res.json({ summedProductsList });
+        } else {
+            res.sendStatus(422);
+        }
+    }
 
     public async getShopingLists(req: Request, res: Response): Promise<void> {
         const shopingLists = await ShopingList.find();
